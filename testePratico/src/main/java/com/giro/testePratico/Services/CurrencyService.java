@@ -1,12 +1,14 @@
 package com.giro.testePratico.Services;
 
 import com.giro.testePratico.Services.exceptions.ObjectNotFoundException;
+import com.giro.testePratico.dto.request.CurrencyRequestDTO;
+import com.giro.testePratico.dto.response.CurrencyResponseDTO;
 import com.giro.testePratico.entities.Currency;
 import com.giro.testePratico.repositories.CurrencyRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CurrencyService {
@@ -17,27 +19,47 @@ public class CurrencyService {
         this.currencyRepository = currencyRepository;
     }
 
-    public List<Currency> getAllCurrencies() {
-        return currencyRepository.findAll();
+    public List<CurrencyResponseDTO> getAllCurrencies() {
+        return currencyRepository.findAll().stream()
+                .map(this::toResponseDTO)
+                .collect(Collectors.toList());
     }
 
-    public Currency findById(Long id) {
-        Optional<Currency> currency = currencyRepository.findById(id);
-        return currency.orElseThrow(()-> new ObjectNotFoundException("Currency not found"));
+    public CurrencyResponseDTO findById(Long id) {
+        Currency currency = currencyRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Currency not found"));
+        return toResponseDTO(currency);
     }
 
-    public Currency save(Currency currency) {
-        return currencyRepository.save(currency);
+    public CurrencyResponseDTO save(CurrencyRequestDTO currencyRequestDTO) {
+        Currency currency = toEntity(currencyRequestDTO);
+        Currency savedCurrency = currencyRepository.save(currency);
+        return toResponseDTO(savedCurrency);
     }
 
-    public Currency update(Long id, Currency currency) {
-        Currency currencyToUpdate = findById(id);
-        currencyToUpdate.setName(currency.getName());
-        currencyToUpdate.setType(currency.getType());
-        return currencyRepository.save(currencyToUpdate);
+    public CurrencyResponseDTO update(Long id, CurrencyRequestDTO currencyRequestDTO) {
+        Currency currencyToUpdate = currencyRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Currency not found"));
+
+        currencyToUpdate.setName(currencyRequestDTO.name());
+        currencyToUpdate.setType(currencyRequestDTO.type());
+
+        Currency updatedCurrency = currencyRepository.save(currencyToUpdate);
+        return toResponseDTO(updatedCurrency);
     }
 
     public void deleteById(Long id) {
         currencyRepository.deleteById(id);
+    }
+
+    private CurrencyResponseDTO toResponseDTO(Currency currency) {
+        return new CurrencyResponseDTO(currency.getId(), currency.getName(), currency.getType());
+    }
+
+    private Currency toEntity(CurrencyRequestDTO dto) {
+        return Currency.builder()
+                .name(dto.name())
+                .type(dto.type())
+                .build();
     }
 }

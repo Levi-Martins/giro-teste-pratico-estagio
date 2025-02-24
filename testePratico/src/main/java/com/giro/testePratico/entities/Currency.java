@@ -3,6 +3,7 @@ package com.giro.testePratico.entities;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.List;

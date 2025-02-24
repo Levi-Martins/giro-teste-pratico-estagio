@@ -5,7 +5,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 public class ExchangeRate extends BaseEntity {
 
-    private LocalDateTime date;
+    private LocalDate date;
     private float dailyVariantion;
     private float dailyRate;
 

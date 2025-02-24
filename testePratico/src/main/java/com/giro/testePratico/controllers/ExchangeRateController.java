@@ -1,7 +1,10 @@
 package com.giro.testePratico.controllers;
 
 import com.giro.testePratico.Services.ExchangeRateService;
-import com.giro.testePratico.entities.ExchangeRate;
+import com.giro.testePratico.dto.request.ExchangeRateRequestDTO;
+import com.giro.testePratico.dto.request.ExchangeRateUpdateRequestDTO;
+import com.giro.testePratico.dto.response.ExchangeRateResponseDTO;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("exchangeRate")
+@RequestMapping("exchange-rates")
 public class ExchangeRateController {
 
     private final ExchangeRateService exchangeRateService;
@@ -19,27 +22,30 @@ public class ExchangeRateController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ExchangeRate>> getAll() {
+    public ResponseEntity<List<ExchangeRateResponseDTO>> getAll() {
         return ResponseEntity.ok(exchangeRateService.getAllExchangeRates());
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ExchangeRate> findById(@PathVariable Long id) {
+    public ResponseEntity<ExchangeRateResponseDTO> findById(@PathVariable Long id) {
         return ResponseEntity.ok(exchangeRateService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<ExchangeRate> save(@RequestBody ExchangeRate exchangeRate) {
-        return new ResponseEntity<>(exchangeRateService.save(exchangeRate), HttpStatus.CREATED);
+    public ResponseEntity<ExchangeRateResponseDTO> save(@RequestBody @Valid ExchangeRateRequestDTO exchangeRateRequestDTO) {
+        return new ResponseEntity<>(exchangeRateService.save(exchangeRateRequestDTO), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ExchangeRate> update(@PathVariable Long id, @RequestBody ExchangeRate exchangeRate) {
-        return new ResponseEntity<>(exchangeRateService.update(id, exchangeRate), HttpStatus.OK);
+    public ResponseEntity<ExchangeRateResponseDTO> update(
+            @PathVariable Long id,
+            @RequestBody @Valid ExchangeRateUpdateRequestDTO exchangeRateUpdateRequestDTO) {
+        return new ResponseEntity<>(exchangeRateService.update(id, exchangeRateUpdateRequestDTO), HttpStatus.OK);
     }
 
+
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<ExchangeRate> deleteById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         exchangeRateService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
