@@ -4,11 +4,14 @@ import com.giro.testePratico.Services.exceptions.ObjectNotFoundException;
 import com.giro.testePratico.dto.request.ExchangeRateRequestDTO;
 import com.giro.testePratico.dto.request.ExchangeRateUpdateRequestDTO;
 import com.giro.testePratico.dto.response.ExchangeRateResponseDTO;
+import com.giro.testePratico.dto.response.PaginatedResponseDTO;
 import com.giro.testePratico.entities.Currency;
 import com.giro.testePratico.entities.ExchangeRate;
 import com.giro.testePratico.repositories.CurrencyRepository;
 import com.giro.testePratico.repositories.ExchangeRateRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -26,10 +29,20 @@ public class ExchangeRateService {
         this.currencyRepository = currencyRepository;
     }
 
-    public List<ExchangeRateResponseDTO> getAllExchangeRates() {
-        return exchangeRateRepository.findAll().stream()
+    public PaginatedResponseDTO<ExchangeRateResponseDTO> getAllExchangeRates(Pageable pageable) {
+        Page<ExchangeRate> page = exchangeRateRepository.findAll(pageable);
+
+        List<ExchangeRateResponseDTO> content = page.getContent().stream()
                 .map(this::toResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
+
+        return new PaginatedResponseDTO<>(
+                content,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages()
+        );
     }
 
     public ExchangeRateResponseDTO findById(Long id) {

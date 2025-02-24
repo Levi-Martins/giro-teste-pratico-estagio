@@ -3,7 +3,11 @@ package com.giro.testePratico.controllers;
 import com.giro.testePratico.dto.request.CurrencyRequestDTO;
 import com.giro.testePratico.dto.response.CurrencyResponseDTO;
 import com.giro.testePratico.Services.CurrencyService;
+import com.giro.testePratico.dto.response.PaginatedResponseDTO;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +25,12 @@ public class CurrencyController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CurrencyResponseDTO>> getAll() {
-        return ResponseEntity.ok(currencyService.getAllCurrencies());
+    public ResponseEntity<PaginatedResponseDTO<CurrencyResponseDTO>> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(currencyService.getAllCurrencies(pageable));
     }
 
     @GetMapping("/{id}")

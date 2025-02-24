@@ -3,8 +3,11 @@ package com.giro.testePratico.Services;
 import com.giro.testePratico.Services.exceptions.ObjectNotFoundException;
 import com.giro.testePratico.dto.request.CurrencyRequestDTO;
 import com.giro.testePratico.dto.response.CurrencyResponseDTO;
+import com.giro.testePratico.dto.response.PaginatedResponseDTO;
 import com.giro.testePratico.entities.Currency;
 import com.giro.testePratico.repositories.CurrencyRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,11 +22,22 @@ public class CurrencyService {
         this.currencyRepository = currencyRepository;
     }
 
-    public List<CurrencyResponseDTO> getAllCurrencies() {
-        return currencyRepository.findAll().stream()
+    public PaginatedResponseDTO<CurrencyResponseDTO> getAllCurrencies(Pageable pageable) {
+        Page<Currency> page = currencyRepository.findAll(pageable);
+
+        List<CurrencyResponseDTO> content = page.getContent().stream()
                 .map(this::toResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
+
+        return new PaginatedResponseDTO<>(
+                content,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages()
+        );
     }
+
 
     public CurrencyResponseDTO findById(Long id) {
         Currency currency = currencyRepository.findById(id)

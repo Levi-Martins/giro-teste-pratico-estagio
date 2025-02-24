@@ -1,15 +1,17 @@
 package com.giro.testePratico.Services;
 
-import com.giro.testePratico.Services.exceptions.ObjectNotFoundException;
 import com.giro.testePratico.Services.exceptions.EmailAlreadyExistsException;
+import com.giro.testePratico.Services.exceptions.ObjectNotFoundException;
 import com.giro.testePratico.dto.request.InvestorRequestDTO;
 import com.giro.testePratico.dto.response.InvestorResponseDTO;
+import com.giro.testePratico.dto.response.PaginatedResponseDTO;
 import com.giro.testePratico.entities.Investor;
 import com.giro.testePratico.repositories.InvestorRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class InvestorService {
@@ -20,10 +22,20 @@ public class InvestorService {
         this.investorRepository = investorRepository;
     }
 
-    public List<InvestorResponseDTO> getAllInvestors() {
-        return investorRepository.findAll().stream()
+    public PaginatedResponseDTO<InvestorResponseDTO> getAllInvestors(Pageable pageable) {
+        Page<Investor> page = investorRepository.findAll(pageable);
+
+        List<InvestorResponseDTO> content = page.getContent().stream()
                 .map(this::toResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
+
+        return new PaginatedResponseDTO<>(
+                content,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages()
+        );
     }
 
     public InvestorResponseDTO findById(Long id) {

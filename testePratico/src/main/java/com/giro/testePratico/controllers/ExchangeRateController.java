@@ -4,7 +4,10 @@ import com.giro.testePratico.Services.ExchangeRateService;
 import com.giro.testePratico.dto.request.ExchangeRateRequestDTO;
 import com.giro.testePratico.dto.request.ExchangeRateUpdateRequestDTO;
 import com.giro.testePratico.dto.response.ExchangeRateResponseDTO;
+import com.giro.testePratico.dto.response.PaginatedResponseDTO;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +25,12 @@ public class ExchangeRateController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ExchangeRateResponseDTO>> getAll() {
-        return ResponseEntity.ok(exchangeRateService.getAllExchangeRates());
+    public ResponseEntity<PaginatedResponseDTO<ExchangeRateResponseDTO>> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(exchangeRateService.getAllExchangeRates(pageable));
     }
 
     @GetMapping(value = "/{id}")

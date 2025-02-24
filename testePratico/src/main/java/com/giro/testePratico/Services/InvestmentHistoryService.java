@@ -3,12 +3,15 @@ package com.giro.testePratico.Services;
 import com.giro.testePratico.Services.exceptions.ObjectNotFoundException;
 import com.giro.testePratico.dto.request.InvestmentHistoryRequestDTO;
 import com.giro.testePratico.dto.response.InvestmentHistoryResponseDTO;
+import com.giro.testePratico.dto.response.PaginatedResponseDTO;
 import com.giro.testePratico.entities.Currency;
 import com.giro.testePratico.entities.InvestmentHistory;
 import com.giro.testePratico.entities.Investor;
 import com.giro.testePratico.repositories.CurrencyRepository;
 import com.giro.testePratico.repositories.InvestmentHistoryRepository;
 import com.giro.testePratico.repositories.InvestorRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,10 +33,20 @@ public class InvestmentHistoryService {
         this.investorRepository = investorRepository;
     }
 
-    public List<InvestmentHistoryResponseDTO> getAllInvestmentHistory() {
-        return investmentHistoryRepository.findAll().stream()
+    public PaginatedResponseDTO<InvestmentHistoryResponseDTO> getAllInvestmentHistory(Pageable pageable) {
+        Page<InvestmentHistory> page = investmentHistoryRepository.findAll(pageable);
+
+        List<InvestmentHistoryResponseDTO> content = page.getContent().stream()
                 .map(this::toResponseDTO)
-                .collect(Collectors.toList());
+                .toList();
+
+        return new PaginatedResponseDTO<>(
+                content,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements(),
+                page.getTotalPages()
+        );
     }
 
     public InvestmentHistoryResponseDTO findById(Long id) {

@@ -3,7 +3,10 @@ package com.giro.testePratico.controllers;
 import com.giro.testePratico.dto.request.InvestorRequestDTO;
 import com.giro.testePratico.dto.response.InvestorResponseDTO;
 import com.giro.testePratico.Services.InvestorService;
+import com.giro.testePratico.dto.response.PaginatedResponseDTO;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +24,12 @@ public class InvestorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<InvestorResponseDTO>> getAll() {
-        return ResponseEntity.ok(investorService.getAllInvestors());
+    public ResponseEntity<PaginatedResponseDTO<InvestorResponseDTO>> getAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(investorService.getAllInvestors(pageable));
     }
 
     @GetMapping("/{id}")
