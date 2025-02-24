@@ -94,4 +94,8 @@ public class ExchangeRateService {
                 .collect(Collectors.toList());
     }
 
+    public void deleteOlderThan30Days() {
+        LocalDate thirtyDaysAgo = LocalDate.now().minusDays(30);
+        exchangeRateRepository.deleteByDateBefore(thirtyDaysAgo);
+    }
 }

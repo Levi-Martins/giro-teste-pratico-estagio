@@ -54,4 +54,10 @@ public class ExchangeRateController {
         exchangeRateService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/old")
+    public ResponseEntity<Void> deleteOlderThan30Days() {
+        exchangeRateService.deleteOlderThan30Days();
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -13,4 +13,9 @@ import java.util.List;
 @Repository
 public interface ExchangeRateRepository extends JpaRepository<ExchangeRate, Long> {
     List<ExchangeRate> findByDateAfter(LocalDate date);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM ExchangeRate e WHERE e.date < :date")
+    void deleteByDateBefore(LocalDate date);
 }
