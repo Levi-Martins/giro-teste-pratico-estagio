@@ -31,6 +31,11 @@ public class ExchangeRateController {
         return ResponseEntity.ok(exchangeRateService.findById(id));
     }
 
+    @GetMapping("/recent")
+    public ResponseEntity<List<ExchangeRateResponseDTO>> getLast7DaysExchangeRates() {
+        return ResponseEntity.ok(exchangeRateService.getLast7DaysExchangeRates());
+    }
+
     @PostMapping
     public ResponseEntity<ExchangeRateResponseDTO> save(@RequestBody @Valid ExchangeRateRequestDTO exchangeRateRequestDTO) {
         return new ResponseEntity<>(exchangeRateService.save(exchangeRateRequestDTO), HttpStatus.CREATED);

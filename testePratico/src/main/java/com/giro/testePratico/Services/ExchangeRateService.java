@@ -8,8 +8,10 @@ import com.giro.testePratico.entities.Currency;
 import com.giro.testePratico.entities.ExchangeRate;
 import com.giro.testePratico.repositories.CurrencyRepository;
 import com.giro.testePratico.repositories.ExchangeRateRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,8 +62,6 @@ public class ExchangeRateService {
         return toResponseDTO(updatedExchangeRate);
     }
 
-
-
     public void deleteById(Long id) {
         exchangeRateRepository.deleteById(id);
     }
@@ -83,6 +83,15 @@ public class ExchangeRateService {
                 .dailyRate(dto.dailyRate())
                 .currency(currency)
                 .build();
+    }
+
+    public List<ExchangeRateResponseDTO> getLast7DaysExchangeRates() {
+        LocalDate sevenDaysAgo = LocalDate.now().minusDays(7);
+        List<ExchangeRate> exchangeRates = exchangeRateRepository.findByDateAfter(sevenDaysAgo);
+
+        return exchangeRates.stream()
+                .map(this::toResponseDTO)
+                .collect(Collectors.toList());
     }
 
 }
