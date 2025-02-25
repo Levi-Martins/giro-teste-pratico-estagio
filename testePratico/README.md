@@ -32,6 +32,7 @@ O projeto conta com uma cobertura de testes unitários, garantindo maior confiab
 
 ### Rodando o projeto standalone
 ```sh
+cd .\testePratico\
 mvn clean package
 ```
 
