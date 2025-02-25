@@ -1,6 +1,6 @@
 package com.giro.testePratico.controllers;
 
-import com.giro.testePratico.Services.ExchangeRateService;
+import com.giro.testePratico.services.ExchangeRateService;
 import com.giro.testePratico.dto.request.ExchangeRateRequestDTO;
 import com.giro.testePratico.dto.request.ExchangeRateUpdateRequestDTO;
 import com.giro.testePratico.dto.response.ExchangeRateResponseDTO;

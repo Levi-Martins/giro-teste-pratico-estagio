@@ -1,7 +1,7 @@
 package com.giro.testePratico.exceptions;
 
-import com.giro.testePratico.Services.exceptions.EmailAlreadyExistsException;
-import com.giro.testePratico.Services.exceptions.ObjectNotFoundException;
+import com.giro.testePratico.services.exceptions.EmailAlreadyExistsException;
+import com.giro.testePratico.services.exceptions.ObjectNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
