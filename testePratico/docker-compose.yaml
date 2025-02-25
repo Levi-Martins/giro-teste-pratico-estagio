@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_APPLICATION_NAME: testePratico
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/giro
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin000
+      SERVER_PORT: 8080
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - minha_rede
+
+  db:
+    image: postgres:14
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_DB: giro
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin000
+    ports:
+      - "5432:5432"
+    networks:
+      - minha_rede
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d giro"]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+
+networks:
+  minha_rede:
+    driver: bridge
