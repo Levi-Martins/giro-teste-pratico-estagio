@@ -2,7 +2,7 @@ package com.giro.testePratico.controllers;
 
 import com.giro.testePratico.dto.request.CurrencyRequestDTO;
 import com.giro.testePratico.dto.response.CurrencyResponseDTO;
-import com.giro.testePratico.services.CurrencyService;
+import com.giro.testePratico.Services.CurrencyService;
 import com.giro.testePratico.dto.response.PaginatedResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.giro.testePratico.dto.request.InvestmentHistoryRequestDTO;
 import com.giro.testePratico.dto.response.InvestmentHistoryResponseDTO;
 import com.giro.testePratico.dto.response.PaginatedResponseDTO;
-import com.giro.testePratico.services.InvestmentHistoryService;
+import com.giro.testePratico.Services.InvestmentHistoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

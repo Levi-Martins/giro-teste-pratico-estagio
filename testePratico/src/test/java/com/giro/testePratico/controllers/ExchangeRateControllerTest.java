@@ -5,7 +5,7 @@ import com.giro.testePratico.dto.request.ExchangeRateRequestDTO;
 import com.giro.testePratico.dto.request.ExchangeRateUpdateRequestDTO;
 import com.giro.testePratico.dto.response.ExchangeRateResponseDTO;
 import com.giro.testePratico.dto.response.PaginatedResponseDTO;
-import com.giro.testePratico.services.ExchangeRateService;
+import com.giro.testePratico.Services.ExchangeRateService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

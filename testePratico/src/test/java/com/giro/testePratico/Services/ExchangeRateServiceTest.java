@@ -1,4 +1,4 @@
-package com.giro.testePratico.services;
+package com.giro.testePratico.Services;
 
 import com.giro.testePratico.dto.request.ExchangeRateRequestDTO;
 import com.giro.testePratico.dto.request.ExchangeRateUpdateRequestDTO;
@@ -8,7 +8,7 @@ import com.giro.testePratico.entities.Currency;
 import com.giro.testePratico.entities.ExchangeRate;
 import com.giro.testePratico.repositories.CurrencyRepository;
 import com.giro.testePratico.repositories.ExchangeRateRepository;
-import com.giro.testePratico.services.exceptions.ObjectNotFoundException;
+import com.giro.testePratico.Services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

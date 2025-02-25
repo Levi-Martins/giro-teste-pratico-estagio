@@ -1,4 +1,4 @@
-package com.giro.testePratico.services;
+package com.giro.testePratico.Services;
 
 import com.giro.testePratico.dto.request.InvestmentHistoryRequestDTO;
 import com.giro.testePratico.dto.response.InvestmentHistoryResponseDTO;
@@ -9,13 +9,12 @@ import com.giro.testePratico.entities.Investor;
 import com.giro.testePratico.repositories.CurrencyRepository;
 import com.giro.testePratico.repositories.InvestmentHistoryRepository;
 import com.giro.testePratico.repositories.InvestorRepository;
-import com.giro.testePratico.services.exceptions.ObjectNotFoundException;
+import com.giro.testePratico.Services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
